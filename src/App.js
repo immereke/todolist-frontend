@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import Todolist from "./components/Todolist";
+import AddTodo from "./components/AddTodo";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            todos: [
+                {id:1, completed:false, title:'Первая задача'},
+                {id:2, completed:false, title:'Вторая задача'}
+            ]
+        }
+    }
+
+    deleteTodo = (id) => {
+        const index=this.state.todos.map(todo=>todo.id).indexOf(id);
+        this.setState(state=> {
+            let {todos} = state;
+            delete todos[index];
+            return todos;
+            }
+        )
+    }
+
+    addTodo = todo =>{
+        this.setState(state=> {
+            let {todos} =state;
+            todos.push(
+                {
+                    title: todo
+                }
+            )
+            return todos
+        })
+    }
+
+
+    render() {
+        const { todos } = this.state;
+
+
+        return(
+            <div>
+            <h1>TodoList</h1>
+                {todos.map(todo=>(
+                        <Todolist todo={todo}
+                                  key={todo.id}
+                                  deleteTodo={()=>this.deleteTodo(todo.id)}
+                        />
+                    )
+                )}
+                <AddTodo addTodo = {this.addTodo}> </AddTodo>
+            </div>
+        )
+    }
 }
 
 export default App;
