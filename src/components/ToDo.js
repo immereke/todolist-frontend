@@ -1,33 +1,73 @@
 import React from 'react'
+import Todolist from "./Todolist";
 
-class AddTodo extends React.Component {
+class ToDo extends React.Component {
     constructor(props) {
         super(props);
-
         this.state= {
-            input: ''
+            input: '',
+            todos: [
+                {id: 1,
+                    completed: false,
+                    title: 'Первая задача'}
+            ]
         }
     }
+
+    deleteTodo = (id) => {
+        const index = this.state.todos.map(todo => todo.id).indexOf(id);
+        this.setState(state => {
+                let {todos} = state;
+                delete todos[index];
+                return todos;
+            }
+        )
+    };
+
+
     addTodo =() => {
         const {input} = this.state;
         if (input)
-            this.props.addTodo(input);
-            this.setState({input: ''})
+            this.addTodos(input);
+        this.setState({input: ''})
     };
+
+    addTodos = (todo) => {
+        this.setState(state => {
+            const {todos} = state;
+            todos.push(
+                {
+                    title: todo
+                }
+            );
+            return todos
+        })
+    }
+
 
     handleChange = event => {
         this.setState({input: event.target.value})
     };
 
     render() {
+        const {todos} = this.state;
         const {input} =this.state;
         return(
             <div>
+                <h1>TodoList</h1>
+                {todos.map((todo, index) => (
+                        <Todolist todo={todo}
+                                  key={index}
+                                  deleteTodo={() => this.deleteTodo(todo.id)}
+                        />
+                    )
+                )}
                 <input  onChange={this.handleChange} value={input}/>
                 <button onClick={this.addTodo}> Добавить </button>
+
             </div>
         )
     }
 }
 
-export default AddTodo
+export default ToDo

@@ -4,9 +4,8 @@ const Todolist = (props) => {
 
     return(
         <div>
-            <p>{props.todo.title}&nbsp;
-                <button onClick={props.deleteTodo}>&#215;</button>
-            </p>
+            {props.todo.title}
+            <button onClick={props.deleteTodo}>&#215;</button>
         </div>
     )
 };
