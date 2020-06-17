@@ -1,14 +1,15 @@
 import React, {Component} from "react";
 import ToDo from "./components/ToDo";
 
-class App extends Component{
+class App extends Component {
 
     render() {
         return (
             <div className='App'>
-                <ToDo />
+                <ToDo/>
             </div>
         );
     }
 }
+
 export default App
