@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {Component} from "react";
 import Todolist from "./Todolist";
 
-class ToDo extends React.Component {
+class ToDo extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -9,42 +10,40 @@ class ToDo extends React.Component {
             todos: [
                 {
                     id: 1,
-                    completed: true,
+                    completed: false,
                     title: 'Первая задача'
                 },
                 {
                     id: 2,
-                    completed: true,
+                    completed: false,
                     title: 'Вторая задача'
                 },
                 {
                     id: 3,
-                    completed: true,
+                    completed: false,
                     title: 'Третья задача'
+                },
+                {
+                    id: 4,
+                    completed: false,
+                    title: 'Четвертая задача'
                 }
             ]
         }
     }
 
+    handleInput = (event) => {
+        this.setState({input: event.target.value})
+    }
+
     completedTodo = (id) => {
-        const index = this.state.todos.map(todo => todo.id).indexOf(id);
-        this.setState(state => {
-            let {todos} = state;
+        const index = this.state.todos.map(todo => todo.id).indexOf(id)
+        this.setState(prevState => {
+            let {todos} = prevState;
             todos[index].completed = true
-            return todos;
+            return todos
         })
-    };
-
-    deleteTodo = (id) => {
-        const index = this.state.todos.map(todo => todo.id).indexOf(id);
-        this.setState(state => {
-                let {todos} = state;
-                delete todos[index];
-                return todos;
-            }
-        )
-    };
-
+    }
 
     addTodo = () => {
         const {input} = this.state;
@@ -66,31 +65,41 @@ class ToDo extends React.Component {
         })
     }
 
-
-    handleChange = event => {
-        this.setState({input: event.target.value})
-    };
+    deleteCompletedTodos = () => {
+        let temp_todos = [...this.state.todos]
+        let result = temp_todos.filter(todo => !todo.completed)
+        this.setState({
+            todos: result
+        })
+        return result
+    }
 
     render() {
-
-        const {todos} = this.state;
         const {input} = this.state;
-        return (
-            <div>
-                <h1>TodoList</h1>
-                {todos.map((todo, index) => (
-                        <Todolist todo={todo}
-                                  key={index}
-                                  completedTodo={() => this.completedTodo(todo.id)}
-                                  deleteTodo={() => this.deleteTodo(todo.id)}
-                        />
-                    )
-                )}
-                <input onChange={this.handleChange} value={input}/>
-                <button onClick={this.addTodo}> Добавить</button>
-            </div>
+        const {todos} = this.state;
+        const finalTodos = todos.map(
+            (todo, index) => {
+                return (
+                    <Todolist todo={todo}
+                              key={index}
+                              handleChange={() => this.completedTodo(todo.id)}
+                              completedTodo={this.completedTodo}
+
+                    />
+                )
+            }
         )
+        return (
+            <div className="Todo">
+                <h1>Todolist</h1>
+                <p>{finalTodos}</p>
+                <input type="text" placeholder="Введите список" onChange={this.handleInput} value={input}/>
+                <button onClick={this.addTodo}> Добавить</button>
+                <button onClick={this.deleteCompletedTodos}>Удалить выполненные задачи</button>
+            </div>
+        );
     }
+
 }
 
 export default ToDo

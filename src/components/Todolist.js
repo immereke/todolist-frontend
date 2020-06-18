@@ -1,18 +1,17 @@
 import React from "react";
-import '../style.css'
 
-const Todolist = (props) => {
-
-    const ActionBtn = () =>
-        <div>{!props.todo.completed ? <button onClick={props.completedTodo}>&#10004;</button> :
-            <button onClick={props.deleteTodo}>X</button>}</div>;
-
-    return (
-        <div className='ActionBtn'>
+function Todolist(props) {
+    return(
+        <div className="Todolist">
             {props.todo.title}
-            <ActionBtn/>
+            <input type="checkbox"
+                   defaultChecked={props.todo.completed}
+                   onChange={props.handleChange}
+            />
+
         </div>
     )
-};
+
+}
 
 export default Todolist
