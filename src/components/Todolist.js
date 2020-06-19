@@ -1,11 +1,11 @@
 import React from "react";
 
-function Todolist(props) {
+function Todolist({todo, ...props}) {
     return(
         <div className="Todolist">
-            {props.todo.title}
+            {todo.title}
             <input type="checkbox"
-                   defaultChecked={props.todo.completed}
+                   checked={props.completed}
                    onChange={props.handleChange}
             />
 
@@ -13,5 +13,4 @@ function Todolist(props) {
     )
 
 }
-
-export default Todolist
+ export default Todolist
